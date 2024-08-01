@@ -15,5 +15,11 @@ namespace SalesWebApplication.Data
         }
 
         public DbSet<SalesWebApplication.Models.Department> Department { get; set; } = default!;
+
+        public DbSet<SalesWebApplication.Models.Seller> Seller { get; set; } = default!;
+
+        public DbSet<SalesWebApplication.Models.SalesRecord> SalesRecord { get; set; } = default!;
+
+
     }
 }
