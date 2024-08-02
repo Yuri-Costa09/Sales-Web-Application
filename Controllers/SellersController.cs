@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SalesWebApplication.Models;
 using SalesWebApplication.Services;
+using System.Threading.Tasks;
 
 namespace SalesWebApplication.Controllers
 {
@@ -13,28 +14,24 @@ namespace SalesWebApplication.Controllers
             _sellerService = sellerService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-
-            var list = _sellerService.FindAll();
+            var list = await _sellerService.FindAllAsync();
             return View(list);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Seller seller)
+        public async Task<IActionResult> Create(Seller seller)
         {
-            _sellerService.Insert(seller);
+            await _sellerService.InsertAsync(seller);
             return RedirectToAction(nameof(Index));
         }
-
-        
     }
 }
