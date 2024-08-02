@@ -8,20 +8,33 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<SalesWebApplicationContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("SalesWebApplicationContext"),
         new MySqlServerVersion("10.4.32-MariaDB"),
-        mysqlOptions => mysqlOptions.MigrationsAssembly("SalesWebApplication")
+        mysqlOptions => mysqlOptions.MigrationsAssembly("SalesWebApplication") 
+
+        
 ));
+
+// Add seeding service.
+builder.Services.AddScoped<SeedingService>();
+
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    using (var scope = app.Services.CreateScope())
+    {
+        var seedingService = scope.ServiceProvider.GetRequiredService<SeedingService>();
+        seedingService.Seed();
+    }
+
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
