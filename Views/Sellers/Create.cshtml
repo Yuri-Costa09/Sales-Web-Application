@@ -1,0 +1,46 @@
+﻿@model SalesWebApplication.Models.Seller
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Sign new Seller</h1>
+
+<h4>Seller</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BaseSalary" class="control-label"></label>
+                <input type="text" asp-for="BaseSalary" class="form-control" aria-label="Amount(to the nearest dollar)" />
+                <span asp-validation-for="BaseSalary" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input asp-action="Create" type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div mt-4>
+    <a asp-action="Index">Back to List</a>
+</div>
+

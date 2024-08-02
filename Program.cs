@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SalesWebApplication.Data;
 using System.Configuration;
 using MySqlConnector;
+using SalesWebApplication.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<SalesWebApplicationContext>(options =>
@@ -16,6 +17,8 @@ builder.Services.AddDbContext<SalesWebApplicationContext>(options =>
 // Add seeding service.
 builder.Services.AddScoped<SeedingService>();
 
+builder.Services.AddScoped<SellerService>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -23,7 +26,7 @@ builder.Services.AddControllersWithViews();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     using (var scope = app.Services.CreateScope())
@@ -31,12 +34,21 @@ if (app.Environment.IsDevelopment())
         var seedingService = scope.ServiceProvider.GetRequiredService<SeedingService>();
         seedingService.Seed();
     }
+    app.UseDeveloperExceptionPage();
 
     app.UseHsts();
 }
+else
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var seedingService = scope.ServiceProvider.GetRequiredService<SeedingService>();
+        seedingService.Seed();
+    }app.UseDeveloperExceptionPage();
 
 
-app.UseHttpsRedirection();
+    app.UseHttpsRedirection();
+}
 app.UseStaticFiles();
 
 app.UseRouting();
